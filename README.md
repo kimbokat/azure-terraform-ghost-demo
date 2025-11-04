@@ -103,8 +103,8 @@ This file contains sensitive data and **should not be committed to GitHub.** Add
 
 ### 3. Clone the repository
 ```bash
-git clone https://github.com/<your-username>/3tier-terraform-ghost.git
-cd 3tier-terraform-ghost
+git clone https://github.com/<your-username>/azure-terraform-ghost-demo.git
+cd azure-terraform-ghost-demo
 ```
 
 ### 4. Initialize Terraform
