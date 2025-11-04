@@ -67,8 +67,7 @@ azure-terraform-ghost-demo/
 └── README.md              # Project documentation and guide
 
 ```
-> ![!TIP]
-> Cloud-init YAML files must begin with `#cloud-config` (no space) for Azure to interpret them correctly.
+Cloud-init YAML files must begin with `#cloud-config` (no space) for Azure to interpret them correctly.
 
 ## ⚙️ Requirements
 
