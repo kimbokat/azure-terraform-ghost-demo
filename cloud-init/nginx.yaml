@@ -1,0 +1,42 @@
+#cloud-config
+package_update: true
+packages:
+  - nginx
+  - curl
+  - ufw
+  - mysql-client  # For network isolation tests
+
+runcmd:
+  # Allow HTTP/HTTPS
+  - ufw allow 'Nginx Full'
+
+  # Enable Nginx at boot
+  - systemctl enable nginx
+  - systemctl start nginx
+
+  # Remove default site
+  - rm -f /etc/nginx/sites-enabled/default
+
+  # Create Ghost reverse proxy config
+  - |
+    cat > /etc/nginx/sites-available/ghost <<'EOF'
+    server {
+        listen 80;
+        server_name _;
+
+        location / {
+            proxy_pass http://${ghost_ip}:2368;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    }
+    EOF
+
+  # Enable Ghost site
+  - ln -s /etc/nginx/sites-available/ghost /etc/nginx/sites-enabled/
+
+  # Test Nginx config and restart
+  - nginx -t
+  - systemctl restart nginx

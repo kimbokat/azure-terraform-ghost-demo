@@ -1,0 +1,22 @@
+#cloud-config
+
+package_update: true
+packages:
+  - mysql-server
+
+runcmd:
+  # Ensure MySQL service is enabled and running
+  - systemctl enable mysql
+  - systemctl start mysql
+
+  # MySQL defaults to 127.0.0.1 (localhost only) -> only apps inside same VM can connect
+  # Ghost needs to connect from another VM
+  # Changing bind address to DB VM's private ip (10.0.3.10) allows Ghost to connect securely without exposing MySQL to internet
+  - sed -i "s/^bind-address.*/bind-address = 10.0.3.10/" /etc/mysql/mysql.conf.d/mysqld.cnf
+  - systemctl restart mysql
+
+  # Create Ghost database and user
+  - mysql -e "CREATE DATABASE ghost_db;"
+  - mysql -e "CREATE USER 'ghost'@'%' IDENTIFIED BY '${db_pass}';"
+  - mysql -e "GRANT ALL PRIVILEGES ON ghost_db.* TO 'ghost'@'%';"
+  - mysql -e "FLUSH PRIVILEGES;"

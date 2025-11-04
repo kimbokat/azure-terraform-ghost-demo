@@ -1,0 +1,51 @@
+#cloud-config
+package_update: true
+
+packages:
+  - curl           # Needed to fetch external scripts (NodeSource)
+  - gnupg          # Required for verifying GPG keys
+  - ca-certificates # Ensures HTTPS certificates are trusted
+  - unzip          # Required by Ghost-CLI for unpacking Ghost
+  - mysql-client   # Needed for Ghost to connect to MySQL
+
+runcmd:
+  # Create the ghost user if it doesn't exist
+  - id -u ${ghost_user} || adduser --disabled-password --gecos "" ${ghost_user}
+
+  # Add user to sudo group so CLI can perform privileged tasks
+  - usermod -aG sudo ${ghost_user}
+
+   # Allow passwordless sudo
+  - echo "${ghost_user} ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/${ghost_user}
+  - chmod 440 /etc/sudoers.d/${ghost_user}
+
+  # Install Node.js 22 from NodeSource
+  - mkdir -p /etc/apt/keyrings
+  - curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+  - NODE_MAJOR=22
+  - echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
+  - apt-get update
+  - apt-get install -y nodejs
+
+  # Verify Node + npm
+  - node -v
+  - npm -v
+
+  # Install Ghost-CLI globally
+  - npm install -g ghost-cli@latest
+
+  # Prepare Ghost directory, ownership to ${ghost_user} so CLI has full control
+  - mkdir -p /var/www/ghost
+  - chown -R ${ghost_user}:${ghost_user} /var/www/ghost
+  - chmod 775 /var/www/ghost
+  - cd /var/www/ghost
+
+  # Setup Ghost using CLI, skipping SSL
+  - sudo -u ${ghost_user} ghost install --db mysql --dbhost ${mysql_ip} --dbuser ghost --dbpass '${db_pass}' --dbname ghost_db --no-prompt --no-setup-nginx --no-setup-ssl --process systemd --url http://${nginx_ip} --ip ${ghost_ip}
+
+  # Enable and start Ghost service as root
+  - systemctl enable ghost
+  - systemctl start ghost
+
+
+ 
