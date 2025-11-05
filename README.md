@@ -67,8 +67,7 @@ azure-terraform-ghost-demo/
 └── README.md              # Project documentation and guide
 
 ```
-> ![!TIP]
-> Cloud-init YAML files must begin with `#cloud-config` (no space) for Azure to interpret them correctly.
+Cloud-init YAML files must begin with `#cloud-config` (no space) for Azure to interpret them correctly.
 
 ## ⚙️ Requirements
 
@@ -76,11 +75,13 @@ azure-terraform-ghost-demo/
 - Azure subscription (Free, Student, or Pay-as-you-go)
 - [Terraform ≥ 1.13.0](https://kodekloud.com/blog/easy-guide-to-install-terraform-on-windows/)
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
-- [Visual Studio Code](https://code.visualstudio.com/)  
-  + HashiCorp Terraform extension
-- [Windows Terminal (built-in OpenSSH)](https://apps.microsoft.com/detail/9n0dx20hk701?hl=fi-FI&gl=FI)
+- [Visual Studio Code](https://code.visualstudio.com/) (+ following extensions)
+  + [HashiCorp Terraform](https://marketplace.visualstudio.com/items?itemName=HashiCorp.terraform)
+  + [YAML by Red Hat](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
+- [Windows Terminal (for built-in OpenSSH)](https://apps.microsoft.com/detail/9n0dx20hk701?hl=fi-FI&gl=FI)
 - [SSH keypair for VM access](https://docs.exavault.com/using-exavault/users/ssh-key-authentication/creating-an-ssh-key-on-windows)  
-  Default path: `C:\Users\<User>\.ssh\id_rsa.pub`
+  - Default location (Windows): `C:\Users\<User>\.ssh\id_rsa.pub`
+  - Terraform variable ssh_public_key_path uses this file by default `(~/.ssh/id_rsa.pub)`
 
 >[!TIP]
 > [Azure for Students offers $100 in Azure credits, with no credit card required. Credit is valid for one year.](https://learn.microsoft.com/en-us/azure/education-hub/about-azure-for-students)

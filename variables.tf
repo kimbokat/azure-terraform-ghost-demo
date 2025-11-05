@@ -42,7 +42,7 @@ variable "subnet_db" {
 
 # Ghost recommends at least 1 GB memory
 variable "vm_size" {
-  description = "VM size for all VMs (change per-VM later if needed)"
+  description = "VM size for all VMs (change per VM later if needed)"
   default     = "Standard_B1s"
 }
 
@@ -73,8 +73,6 @@ variable "mysql_private_ip" {
   default     = "10.0.3.10"
 }
 
-# TODO: figure out best practice for private ips
-
 # -----------------------
 # sensitive / secrets
 # -----------------------
@@ -85,4 +83,3 @@ variable "mysql_password" {
   default     = "mypass" # .tfvars overrides default pass
 }
 
-# TODO: key vault
