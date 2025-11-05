@@ -46,7 +46,7 @@ The environment follows a [**3-tier architecture**](https://www.ibm.com/think/to
 - **NAT Gateway** for outbound Internet access from private subnets
 - **Cloud-init** scripts for VM bootstrapping (installing NGINX, Ghost, MySQL)
 
-![architecture diagram](image-4.png)
+![architecture diagram](architecture_diagram.png)
 
 ## 📂 Repository Structure
 ```
