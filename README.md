@@ -1,31 +1,40 @@
 # Terraform: Ghost 3-Tier Deployment on Azure
+[![License: MIT](https://img.shields.io/badge/License-MIT-teal.svg)](./LICENSE)
+[![Terraform](https://img.shields.io/badge/Terraform-1.13.0-623CE4?logo=terraform)](#)
+[![Ubuntu](https://img.shields.io/badge/Ubuntu-22.04_LTS-E95420?logo=ubuntu&logoColor=white)](#)
+[![Ghost](https://img.shields.io/badge/Ghost-6.6.1-15171A?logo=ghost&logoColor=white)](#)
+[![Nginx](https://img.shields.io/badge/NGINX-1.18.0-009639?logo=nginx&logoColor=white)](#)
+[![MySQL](https://img.shields.io/badge/MySQL-8.0.43-4479A1?logo=mysql&logoColor=white)](#)
 
-**Stack:** Azure | Terraform | Ubuntu | Ghost CMS | Nginx | MySQL
+**Verified stack:** Ubuntu 22.04 LTS · Terraform 1.13.0 · AzureRM 3.117.1 · NGINX 1.18.0 · Ghost 6.6.1 (CLI 1.28.3) · MySQL 8.0.43
 
-This project demonstrates how to use **Terraform** to deploy a simple three-tier architecture on **Microsoft Azure**. The stack hosts [**Ghost**](https://ghost.org/), an open-source platform for publishing blogs and websites.
+---
+## Overview
 
+When I started learning Infrastructure as Code, I couldn't find a clear guide using the tools I wanted to explore. I built this project to bridge that gap. Demonstrating how to use **Terraform** to deploy a production-like three-tier architecture on **Microsoft Azure** while hosting a real application ([**Ghost CMS**](https://ghost.org/)).
 
-> [!NOTE] 
-> This is a learner-friendly Terraform project built for clarity and demonstration purposes. It can be extended with remote state, CI/CD, and Key Vault integration for production-style deployments.
+**What you'll learn:**
+- Provisioning multi-tier cloud infrastructure with Terraform
+- Implementing network security with NSGs and private subnets
+- Automating VM configuration using cloud-init
+- Managing SSH access patterns for private infrastructure
+- Working with Azure CLI and Linux command line
 
+> [!NOTE]
+> **Disclaimer:**  
+> This project is provided for educational and informational purposes only. While built with care, no warranties are made regarding completeness, reliability, or accuracy. 
+> Any actions taken based on this material are strictly at your own risk. The code is provided "as is" under the MIT License. See [LICENSE](./LICENSE) for details.
 
-
-## Why?
-
-When I started learning, I couldn't find a clean guide going through the process with the tools that I wanted to use. So I decided to create a simple guide how to use Terraform and Azure based on my own learning experience.
-
-The repository is designed to help beginners learn **Infrastructure as Code (IaC)** concepts and workflow. It acts as a **hands-on experience** for people with some familiarity of cloud concepts.
-
-
+## Three-tier infrastructure
 
 You’ll deploy a real web app (Ghost CMS) using [Terraform to provision infrastructure automatically.](https://developer.hashicorp.com/terraform/tutorials/azure-get-started/infrastructure-as-code?in=terraform%2Fazure-get-started)
 The environment follows a [**3-tier architecture**](https://www.ibm.com/think/topics/three-tier-architecture) with clear separation between presentation, logic, and data layers.
 
-| Tier | Network Scope | Component | Description |
-|------|----------------|------------|--------------|
-| **Web Tier** | Public | **NGINX** | Acts as the entry point and reverse proxy for incoming HTTP traffic |
-| **Application Tier** | Private | **Ghost CMS** | Hosts the Ghost blog and serves dynamic content behind NGINX |
-| **Database Tier** | Private | **MySQL** | Stores Ghost’s content, users, and configuration data |
+| Tier | Network Scope | Component | Description | Key Concept
+|------|----------------|------------|--------------|---------
+| **Web Tier** | Public | **NGINX** | Entry point and reverse proxy for incoming HTTP traffic | Internet-facing access with public IP |
+| **Application Tier** | Private | **Ghost CMS** | Hosts the Ghost blog and serves dynamic content behind NGINX | Private subnet with NAT for outbound access |
+| **Database Tier** | Private | **MySQL** | Stores Ghost's content, and configuration data | Restricted access via NSG rules |
 
 
 
@@ -70,8 +79,8 @@ azure-terraform-ghost-demo/
 Cloud-init YAML files must begin with `#cloud-config` (no space) for Azure to interpret them correctly.
 
 ## ⚙️ Requirements
+Setup was tested in Windows 11 (local environment)
 
-- Requirements were tested in Windows 11
 - Azure subscription (Free, Student, or Pay-as-you-go)
 - [Terraform ≥ 1.13.0](https://kodekloud.com/blog/easy-guide-to-install-terraform-on-windows/)
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
@@ -205,50 +214,34 @@ Each test verifies a part of the infrastructure.
 > Remember to `terraform destroy` when you are done testing and poking around VMs.
 
 
-## 📈 Considerations for a Better Product
+## 📈 From Learning to Production
 
-This setups works well for learning Infrastructure as Code, but few additions could bring it closer to production-level quality.
+This setup demonstrates core IaC concepts in a working environment. Here's what you'd add to make it production-ready:
 
-### Ghost production readiness
-  For a fully functional self hosted Ghost you would need to add the following:
+**Security & Secrets**
+- Migrate MySQL password from local `.tfvars` to [Azure Key Vault](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/service_principal_client_secret) or [Terraform Vault](https://developer.hashicorp.com/vault/tutorials/get-started/learn-terraform)
+- Replace public SSH with [Azure Bastion](https://learn.microsoft.com/en-us/azure/bastion/bastion-overview) for secure VM management
 
-  - Add a domain name for proper HTTPS and SSL setup
-  - Configure an SMTP server to enable Ghost user registration and password recovery
+**State & Collaboration**
+- Store Terraform state in [Azure Blob Storage](https://developer.hashicorp.com/terraform/language/settings/backends/azurerm) for team access
+- Authenticate via Service Principal instead of interactive `az login`
+
+**Operations**
+- Add CI/CD with [GitHub Actions](https://resources.github.com/learn/pathways/automation/essentials/building-a-workflow-with-github-actions/) for automated validation
+- Implement monitoring via [Azure Monitor](https://learn.microsoft.com/en-us/azure/azure-monitor/overview) or [Grafana](https://grafana.com/products/cloud/?pg=oss-graf&plcmt=hero-txt)
+
+**Ghost Configuration**
+- Configure custom domain with HTTPS/SSL
+- Add SMTP server for user registration and password recovery
+
 ---
-### General improvements
 
-💡 **Secrets Management (Azure Key Vault)**
-- MySQL password is currently in a local `.tfvars` file which is fine for testing.
-- In production secrets should be stored in Azure Key Vault and fetched dynamically by Terraform.
+## License
 
-💡 **CI/CD with Github Actions** 
+This project is licensed under the [MIT License](https://choosealicense.com/licenses/mit/).  
 
-- Automate validation and deployment for smoother updates. Automation good!
+You’re free to use, modify, and share this code for any purpose, provided you include the original license notice.
 
-*Learn more: [Building a workflow with GitHub Actions](https://resources.github.com/learn/pathways/automation/essentials/building-a-workflow-with-github-actions/)*
+The project and all files are provided **as is**, without warranty of any kind. See the [LICENSE](./LICENSE) file for full details.
 
-💡 **Service Principal for authentication**
-
-- For simplicity, this guide uses interactive Azure CLI login (`az login`).
-In production or CI/CD pipelines, you’ll want to authenticate Terraform using a Service Principal instead.
-
-*Learn more: [AzureRM Provider Authentication](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/service_principal_client_secret#creating-a-service-principal)*
-
-💡 **Remote Backend** 
-
-- Store Terraform state in Azure Blob Storage to keep it safe and shareable between team members  
-
-*Learn more: [Terraform Backend (azurerm)](https://developer.hashicorp.com/terraform/language/settings/backends/azurerm)*
-
-💡 **Monitoring & Dashboards**  
-
-- Add dashboards and alerts using Azure Monitor or Grafana to keep track of performance and diagnose issues faster.
-
-*Learn more: [Azure Monitor overview](https://learn.microsoft.com/en-us/azure/azure-monitor/overview)*
-
-💡 **Azure Bastion**
-
-- Use Azure Bastion instead of public SSH access for more secure management of virtual machines without exposing public ip addresses.
-
-*Learn more: [Azure Bastion](https://learn.microsoft.com/en-us/azure/bastion/bastion-overview)*
 
