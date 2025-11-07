@@ -1,12 +1,11 @@
 # Terraform: Ghost 3-Tier Deployment on Azure
 [![License: MIT](https://img.shields.io/badge/License-MIT-teal.svg)](./LICENSE)
-[![Terraform](https://img.shields.io/badge/Terraform-1.13.0-623CE4?logo=terraform)](#)
-[![Ubuntu](https://img.shields.io/badge/Ubuntu-22.04_LTS-E95420?logo=ubuntu&logoColor=white)](#)
-[![Ghost](https://img.shields.io/badge/Ghost-6.6.1-15171A?logo=ghost&logoColor=white)](#)
-[![Nginx](https://img.shields.io/badge/NGINX-1.18.0-009639?logo=nginx&logoColor=white)](#)
-[![MySQL](https://img.shields.io/badge/MySQL-8.0.43-4479A1?logo=mysql&logoColor=white)](#)
+[![Azure](https://img.shields.io/badge/Microsoft%20Azure-Cloud-0089D6)](https://azure.microsoft.com/)
+[![Terraform](https://img.shields.io/badge/Terraform-1.13.0-623CE4?logo=terraform)](https://www.terraform.io/)
+[![Ghost CMS](https://img.shields.io/badge/Ghost-6.6.1-15171A?logo=ghost&logoColor=white)](https://ghost.org/)
 
-**Verified stack:** Ubuntu 22.04 LTS · Terraform 1.13.0 · AzureRM 3.117.1 · NGINX 1.18.0 · Ghost 6.6.1 (CLI 1.28.3) · MySQL 8.0.43
+**Verified Stack:**  
+Ubuntu 22.04 LTS · Terraform 1.13.0 · AzureRM 3.117.1 · NGINX 1.18.0 · Ghost 6.6.1 (CLI 1.28.3) · MySQL 8.0.43
 
 ---
 ## Overview
