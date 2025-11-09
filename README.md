@@ -78,18 +78,19 @@ azure-terraform-ghost-demo/
 Cloud-init YAML files must begin with `#cloud-config` (no space) for Azure to interpret them correctly.
 
 ## ⚙️ Requirements
-Setup was tested in Windows 11 (local environment)
 
-- Azure subscription (Free, Student, or Pay-as-you-go)
-- [Terraform ≥ 1.13.0](https://kodekloud.com/blog/easy-guide-to-install-terraform-on-windows/)
-- [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
-- [Visual Studio Code](https://code.visualstudio.com/) (+ following extensions)
-  + [HashiCorp Terraform](https://marketplace.visualstudio.com/items?itemName=HashiCorp.terraform)
-  + [YAML by Red Hat](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
-- [Windows Terminal (for built-in OpenSSH)](https://apps.microsoft.com/detail/9n0dx20hk701?hl=fi-FI&gl=FI)
-- [SSH keypair for VM access](https://docs.exavault.com/using-exavault/users/ssh-key-authentication/creating-an-ssh-key-on-windows)  
-  - Default location (Windows): `C:\Users\<User>\.ssh\id_rsa.pub`
-  - Terraform variable ssh_public_key_path uses this file by default `(~/.ssh/id_rsa.pub)`
+
+**Development Environment:** Windows 11 (tested)
+
+**Required Tools:**
+- [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) - For authentication and account management
+- [Terraform ≥ 1.13.0](https://kodekloud.com/blog/easy-guide-to-install-terraform-on-windows/) - Infrastructure provisioning
+- [Visual Studio Code](https://code.visualstudio.com/) with [HashiCorp Terraform](https://marketplace.visualstudio.com/items?itemName=HashiCorp.terraform) and [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml) extensions
+- [Windows Terminal](https://apps.microsoft.com/detail/9n0dx20hk701) - For built-in OpenSSH client
+- SSH keypair - [Setup guide](https://docs.exavault.com/using-exavault/users/ssh-key-authentication/creating-an-ssh-key-on-windows)
+  - Terraform uses the path `~/.ssh/id_rsa.pub` by default (works cross-platform)
+
+**Azure Subscription:** Free tier, Student, or Pay-as-you-go
 
 >[!TIP]
 > [Azure for Students offers $100 in Azure credits, with no credit card required. Credit is valid for one year.](https://learn.microsoft.com/en-us/azure/education-hub/about-azure-for-students)
@@ -112,7 +113,7 @@ This file contains sensitive data and **should not be committed to GitHub.** Add
 
 ### 3. Clone the repository
 ```bash
-git clone https://github.com/<your-username>/azure-terraform-ghost-demo.git
+git clone https://github.com/kimbokat/azure-terraform-ghost-demo.git
 cd azure-terraform-ghost-demo
 ```
 
